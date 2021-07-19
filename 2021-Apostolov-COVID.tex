@@ -262,8 +262,6 @@ We plan to estimate vector autoregression models  to analyze the relationship be
 We will also fit cluster-level models and a global model which includes exogenous variables (such as interventions).
 Our findings yield insights into how various activities have been impacted by COVID-19 and vice-versa.
 We expect that our model outcomes will guide policymakers to adopt  appropriate  measures to mitigate and safely recover from the ongoing pandemic, as well as future ones.
-\section{Literature Review}
-Similar studies aggregate data on a daily basis and use a dynamic spatial network model to estimate the confirmed infections in each country from a global sample. \cite{zhang2020pathways} Passenger flight capacity is used as opposed to the actual number of passengers who flew in the studied time frame (January to April, 2020). Aggregated location data is also used in the mobility networks models explaining inequities but focusing solely on the US. 
 
 \section{Introduction}
 COVID-19 has had a severe impact on mobility and social activities since initial reports of the disease emerged in late 2019.
@@ -278,12 +276,14 @@ the authors develop a dynamic network model using time-dependent border restrict
 \trbcite{mckenzie2020country} studied the patterns in 6 activity responses across 108 countries but this was an exploratory effort in comparison with government policies and it included no modeling attempt to explain COVID-19 outcomes.
 
 Beyond these global studies, several city and country-specific simulations and models have been estimated to explain how activities, mobility (particularly transit) impact COVID-19 outcomes.
-\trbcite{kumar2020activitybaseda} used an activity-based epidemiological framework to study how COVID-19 is propagated across various daily activities in car-dependent cities typically found in the US and Canada.
+\trbcite{kumar2020activitybased} used an activity-based epidemiological framework to study how COVID-19 is propagated across various daily activities in car-dependent cities typically found in the US and Canada.
 They quantified the effect of the transit network on COVID-19 spread and demonstrated the importance of work and home activities in the early and latter stages of the epidemic.
 \trbcite{badr2020association} developed a generalized linear model to explain COVID-19 growth based on overall mobility changes at the county level in the US. Inter-county movements were factored in but impacts by mode or activity were not analyzed.
 Given China's and then  Italy's prominence in the earlier stages of the pandemic, several studies have examined their mobility patterns \trbcite{
   kraemer2020effect,bonaccorsi2020economic,pepe2020covid19,carteni2020how}.
 While these have been important for country-wide epidemiological studies, they have not provided knowledge on activity-based impacts.
+
+Similar studies aggregate data on a daily basis and use a dynamic spatial network model to estimate the confirmed infections in each country from a global sample. \trbcite{zhang2020covid19} Passenger flight capacity is used as opposed to the actual number of passengers who flew in the studied time frame (January to April, 2020). Aggregated location data is also used in the mobility networks models explaining inequities but focusing solely on the US. 
 
 Therefore, there remains an urgent need to understand the interdependencies between COVID-19 outcomes and human mobility and activity patterns.
 Statistically significant models can yield insights to enable policymakers contain and recover from the ongoing pandemic.
@@ -296,7 +296,6 @@ These models explain which activities impact COVID-19 outcomes and vice versa, p
 %By assigning a value of zero or one to international mobility restrictions, Zhang et al discover a direct relationship between the transmission rates and the coefficients in the estimation outcome, i.e. positive coefficients indicate effectiveness. 
 
 % \trbcite{forecasting} shed light on forecasting with Bayesian Global Vector Autoregressive Model. This statistical approach pertains to the impacts of mobility on COVID-19 due to its counterfactual nature; instead of treating observations in isolation B-GVAR accommodates variable interdependence and produces more robust forecasts. Country-specific models can be converted to a system of equations where all endogenous variables are stacked. Although taking into account international linkages improves the forecast, the optimal lag for each country still needs to be estimated and tested for stationarity 
-
 
 
 
@@ -328,16 +327,16 @@ Apple Maps                        & Compared to a baseline volume on January 13t
 \small
 \begin{tabular}{ll}\toprule
 \textbf{Variable}                                         & \textbf{Description}                                    \\\midrule
-confirmed\_cases                                         & Newly confirmed cases of COVID-19              \\
-driving                                                  & Requests for driving directions in Apple Maps.    \\
-walking                                                  & Requests for walking directions in Apple Maps   \\
-transit                                                  & Requests for transit directions in Apple Maps   \\
+covid\_cases & New COVID-19 cases as tracked by Johns Hopkins University. \\
 retail\_and\_recreation\_percent\_change\_from\_baseline & Retail and recreation movement trends.            \\
 grocery\_and\_pharmacy\_percent\_change\_from\_baseline  & Grocery and pharmacy movement trends.             \\
 parks\_percent\_change\_from\_baseline                   & Parks movement trends.                           \\
 transit\_stations\_percent\_change\_from\_baseline       & Transit stations movement trends.                \\
 workplaces\_percent\_change\_from\_baseline              & Workplaces movement trends.                      \\
-residential\_percent\_change\_from\_baseline             & Retail and recreation movement trends.          \\\bottomrule
+residential\_percent\_change\_from\_baseline             & Retail and recreation movement trends. \\
+origin & Flight Origin. \\
+destination & Flight Destination. \\
+\\\bottomrule
 \end{tabular}
 \end{table}
 
@@ -356,17 +355,17 @@ These yield preliminary insights into the trends at the country level.
 Finally, we intend to estimate vector autoregression models at the country and at the cluster level in order to quantify how changes in activity and mobility trends influence COVID-19 outcomes. 
 In particular, we expect results as well on interdependencies between the mobility and activity variables.
 
-\subsection{Dynamic time warping}
-The dynamic time warping (DTW) algorithm \trbcite{giorgino2009computing} computes the optimal distance between pairwise time series.
-Any hierarchical clustering procedure requires a dissimilarity matrix as an input, which DTW provides.
-First, we compute the Euclidean distance matrix for each country across the dimensions of the endogenous variables.
-Second, we apply DTW to find the optimal matching between the countries based on their pairwise distance matrices across the dimensions observed.
-The symmetric dissimilarity matrix is then used an input to the clustering algorithm.
+% \subsection{Dynamic time warping}
+% The dynamic time warping (DTW) algorithm \trbcite{giorgino2009computing} computes the optimal distance between pairwise time series.
+% Any hierarchical clustering procedure requires a dissimilarity matrix as an input, which DTW provides.
+% First, we compute the Euclidean distance matrix for each country across the dimensions of the endogenous variables.
+% Second, we apply DTW to find the optimal matching between the countries based on their pairwise distance matrices across the dimensions observed.
+% The symmetric dissimilarity matrix is then used an input to the clustering algorithm.
 
 
-\subsection{Clustering}
-We use the Ward method \trbcite{murtagh2014ward}, which is a hierarchical agglomerative clustering (HAC) approach, to group the countries.
-The dendogram is shown in \autoref{fig:dend}.
+% \subsection{Clustering}
+% We use the Ward method \trbcite{murtagh2014ward}, which is a hierarchical agglomerative clustering (HAC) approach, to group the countries.
+% The dendogram is shown in \autoref{fig:dend}.
 
 
 % We use a Global Vector AutoRegression (GVAR) modeling framework \cite{dees2007exploring} (Carteni et al
@@ -406,7 +405,8 @@ The dendogram is shown in \autoref{fig:dend}.
 
 
 
-\subsection{Vector autoregression model}
+\subsection{Global Vector Autoregression with dynamic weights}
+
 The basic vector autoregression (VAR) model is given by:
 \begin{equation}
   \label{eq:6}
@@ -417,7 +417,57 @@ $A_{0}(t)$ captures the deterministic components and
 $A(\ell)$ is a polynomial in the lag operator and $\varepsilon_{t}\sim iid(0,\Sigma_{\varepsilon})$ are random disturbances.
 This framework allows for specification of both dynamic and static interdependencies
 among the endogenous variables, as well as cross-sectional heterogeneities (when a panel VAR framework is used).
-Country-specific VAR models can also be stacked to yield a global VAR  \trbcite{martin2017weighting,dees2007exploring,covid19b}, allowing for the inclusion of weakly exogenous (``foreign'') variables (such as border closures) using weights (such as air travel flows) from each of the countries.
+Country-specific VAR models can also be stacked to yield a global VAR  \trbcite{martin2017weighting,dees2007exploring,covid19b}, allowing for the inclusion of weakly exogenous (``foreign'') variables (such as border closures) using weights (such as air travel flows) from each of the countries. The major contribution of our analysis to the GVAR literature is the use of dynamic, rather than static, weights. Thus, we incorporate international flight data (aggregated at the weekly level) to compute the weakly exogenous variables in the model, thereby capturing the effects of the short-term changes in international travel during the early onset of COVID-19.
+
+The global VAR model is specified as follows:
+
+\begin{equation}
+  \label{eq:1}
+  x_{i,t} = \sum_{l=1}^{p_{i}}\Phi_{il}x_{i,t-l} + \Lambda_{i0}x_{i,t}^{*} + \sum_{l=1}^{q_{i}}\Lambda_{il}x_{i,t-l}^{*} + \varepsilon_{i,t}
+\end{equation}
+where $x_{i,t}$ is a vector of $k_{i}\times 1$ endogenous variables and $i = 1, 2, \ldots, N$ is the number of countries in the model.
+$\Phi_{il}$ is a coefficient matrix of the cointegrated endogenous variables. $\Lambda_{i0}$ is a coefficient matrix for the contemporanoues weakly exogenous variable $x_{i,t}^{*}$. $\Lambda_{il}$ is the coefficient matrix of the $q_{i}$ lagged foreign variables $x_{i,t-l}^{*}$, where
+\begin{equation}
+  \label{eq:2}
+  x_{i,t}^{*} = \ol{W}_{it}^{'}x_{t}.
+\end{equation}
+The matrix $\ol{W}_{it}^{'}$ is the $k^{*} \times N$ matrix of country-specific weights.
+Stacking the domestic and foreign variables, we obtain
+\begin{equation}
+  \label{eq:3}
+  z_{i,t} =
+  \begin{bmatrix}
+    x_{i,t}^{'}, x_{i,t}^{*'}
+  \end{bmatrix}'  = W_{it}x_{t}
+\end{equation}
+where $W_{it} = E_{i}\ol{W}_{it}$ and $E_{i}$ is a selection matrix We
+can then compactly write the model as
+\begin{equation}
+  \label{eq:4}
+  G_{0}x_{t} = \sum_{l=1}^{p}G_{l}x_{t-l} + \varepsilon_{t}
+\end{equation}
+where
+\begin{equation}
+  \label{eq:5}
+  G_{l} =
+  \begin{bmatrix}
+    A_{1,l}W_{1}\\ A_{2,l}W_{2}\\ \vdots \\A_{N,l}W_{N}
+  \end{bmatrix}
+  % =
+  % \begin{bmatrix}
+  %   \Phi_{1l} & \Lambda_{2l} \\ \vdots  & \vdots \\     \Phi_{Nl} & \Lambda_{Nl} 
+  % \end{bmatrix}
+\end{equation}
+and $A_{i,l} = [\Phi_{1l}  \Lambda_{2l}]$.
+
+The global model can then be compactly written as
+\begin{equation}
+  \label{eq:6}
+  x_{t} = \sum_{l=1}^{p}G_{0}^{-1}G_{l }x_{t-l} + G_{0}^{-1}u_{t}
+\end{equation}
+where $x_{t}$ $x_{t-l}$ and $u_{t}$ are stacked vectors of length $kN$.
+
+
 
 % In this case, the domestic variables are as follows (growth rates computed as difference of logs):
 % \begin{itemize}
