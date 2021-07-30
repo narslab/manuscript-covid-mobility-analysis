@@ -295,7 +295,7 @@ These models explain which activities impact COVID-19 outcomes and vice versa, p
 \section{Data}
 We use Community Mobility Reports compiled by Google\footnote{\url{https://www.google.com/covid19/mobility/}}. %The data is publicly available at:
 The new confirmed cases global data set is provided by the Johns Hopkins University COVID-19 Data initiative\footnote{\url{https://github.com/CSSEGISandData/COVID-19}}.
-Google tracks movement trends by region and segments them into categories such as residential, workplace and transit. Our integrated data set captures aggregated location data for a variety of categorized places from February 15 to August 31. The data shows us the change in visitors compared to a baseline of days (January 3 - February 6, 2020). By tracking user requests of their Maps application, Apple contributes a snapshot of incidental trips as opposed to actual foot traffic which is the approach taken by Google for their Community Mobility Reports. 
+Google tracks movement trends by region and segments them into categories such as residential, workplace and transit based on actual foot traffic. Our integrated data set captures aggregated location data for a variety of categorized places from February 15 to August 31. The data shows us the change in visitors compared to a baseline of days (January 3 - February 6, 2020).  
 The sources are summarized in \autoref{tab:sources} and the variables are described in \autoref{tab:variables}.
 The integrated dataset (along with the code and plots generated for this paper) is publicly available on Github.\footnote{\url{https://github.com/narslab/covid-analysis/tree/master/mobility}}
 
@@ -343,11 +343,11 @@ Our clustering procedure based on the activity and mobility trends of 63 countri
 Clusters 1 and 2 are much smaller than the other two, with 9 and 11 members, respectively.
 
 We perform a time series transformation of the community mobility data. Google clusters their baseline trends around zero which affects our log differencing.
-Therefore, we shift all of the movement indicators such as workplace, residential and transit by 100 which is also consistent with Apple's approach of keeping track of requests for directions.
+Therefore, we shift all of the movement indicators such as workplace, residential and transit by 100.
 
 There is no strong continental dominance in any one of the clusters.
 This indicates at least there is geographic heterogeneity in the distribution of these trends as observed by Google location.
-We note that these variables are only a partial observation of the true activity/mobility trends across these dimensions, given that only a select proportion in each country uses Google devices with location data turned on, or Apple devices for navigation.
+We note that these variables are only a partial observation of the true activity/mobility trends across these dimensions, given that only a select proportion in each country uses Google devices with location data turned on.
 Further, these samples may be more representative of urban or suburban populations in some countries than in others.
 Nevertheless, some useful insights may still be gained.
 
@@ -413,20 +413,6 @@ However, in Cluster 3, many countries observed a decline of up to 75 percentage 
   \label{fig:act}
 \end{figure}
 
-
-% The driving, transit and walking activities observed from navigation via Apple devices do not distinctly vary among the clusters (\autoref{fig:mob}).
-% This could be explained by the fact that usual activities perhaps do not require navigation.
-% And also since Apple Maps users are not always representative of the population, it is less likely that changes in regular activities would be discernible from these data.
-
-% \begin{figure}[h!]
-%   \centering
-%   \includegraphics[width=.9\textwidth]{c1-mobility}
-%   \includegraphics[width=.9\textwidth]{c2-mobility}
-%   \includegraphics[width=.9\textwidth]{c3-mobility}
-%   \includegraphics[width=.9\textwidth]{c4-mobility}
-%   \caption{Mobility changes from baseline (100\%) by cluster (Apple dataset). Trends are indicated using a generalized linear (GLM) fit for each country.}
-%   \label{fig:mob}
-% \end{figure}
 
 
 
