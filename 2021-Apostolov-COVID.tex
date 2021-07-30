@@ -293,9 +293,9 @@ These models explain which activities impact COVID-19 outcomes and vice versa, p
 
 
 \section{Data}
-We use transportation data provided by Apple\footnote{\url{https://www.apple.com/covid19/mobility}} along with Community Mobility Reports compiled by Google\footnote{\url{https://www.google.com/covid19/mobility/}}. %The data is publicly available at:
+We use Community Mobility Reports compiled by Google\footnote{\url{https://www.google.com/covid19/mobility/}}. %The data is publicly available at:
 The new confirmed cases global data set is provided by the Johns Hopkins University COVID-19 Data initiative\footnote{\url{https://github.com/CSSEGISandData/COVID-19}}.
-Apple's data set focuses on transportation types (walking, driving, transit) whereas Google tracks movement trends by region and segments them into categories such as residential, workplace and transit. Our integrated data set captures changes in requests for directions from January 22 to July 14 as well as aggregated location data for a variety of categorized places. The data shows us the change in visitors from February 15 to July 12 compared to a baseline of days (January 3 - February 6, 2020). By tracking user requests of their Maps application, Apple contributes a snapshot of incidental trips as opposed to actual foot traffic which is the approach taken by Google for their Community Mobility Reports. 
+Google tracks movement trends by region and segments them into categories such as residential, workplace and transit. Our integrated data set captures aggregated location data for a variety of categorized places from February 15 to August 31. The data shows us the change in visitors compared to a baseline of days (January 3 - February 6, 2020). By tracking user requests of their Maps application, Apple contributes a snapshot of incidental trips as opposed to actual foot traffic which is the approach taken by Google for their Community Mobility Reports. 
 The sources are summarized in \autoref{tab:sources} and the variables are described in \autoref{tab:variables}.
 The integrated dataset (along with the code and plots generated for this paper) is publicly available on Github.\footnote{\url{https://github.com/narslab/covid-analysis/tree/master/mobility}}
 
@@ -307,7 +307,7 @@ The integrated dataset (along with the code and plots generated for this paper) 
 \begin{tabular}{ll}\toprule
 \bf Source                         & \bf Overview                                                                              \\\midrule
 Johns Hopkins University          & Time series summary globally.                                                               \\
-Apple Maps                        & Compared to a baseline volume on January 13th, 2020.                                          \\
+Airsavvi Flight Data                        & Weekly aggregate of passenger flight data collected by the aviation technology firm.                                          \\
   Google Community Mobility Reports & Compared to a baseline day \\
   & (median value over period from Jan 3 to Feb 6, 2020)\\\bottomrule
 \end{tabular}
