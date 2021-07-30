@@ -264,16 +264,11 @@ Our findings yield insights into how various activities have been impacted by CO
 We expect that our model outcomes will guide policymakers to adopt  appropriate  measures to mitigate and safely recover from the ongoing pandemic, as well as future ones.
 
 \section{Introduction}
-COVID-19 has had a severe impact on mobility and social activities since initial reports of the disease emerged in late 2019.
-By May 2020 most countries had implemented social distancing measures and imposed strict travel restrictions to curtail the spread of the virus
-both within their borders and internationally.
-According to \trbcite{bonaccorsi2020economic}, the international spread of the disease can be partially explained by risk perception,
-mobility behavior and social media influences using a global vector autoregression (GVAR) modeling framework\cite{dees2007exploring}.
+COVID-19 has had a severe impact on mobility and social activities since initial reports of the disease emerged in late 2019. By May 2020 most countries had implemented social distancing measures and imposed strict travel restrictions to curtail the spread of the virus both within their borders and internationally.
+The international spread of the disease can be partially explained by risk perception, mobility behavior and social media influences using a global vector autoregression (GVAR) modeling framework\cite{milani2020covid19}.
 %Milani concludes that most countries learn from each other's social distancing response which can be partially explained by social networks.  
-\trbcite{zhang2020pathways} confirm that human mobility is key to understanding the transmission pathways.
-Using a mobility dataset of over 500,000 flights and over 100 million passengers,
-the authors develop a dynamic network model using time-dependent border restrictions as exogenous variables.
-\trbcite{mckenzie2020country} studied the patterns in 6 activity responses across 108 countries but this was an exploratory effort in comparison with government policies and it included no modeling attempt to explain COVID-19 outcomes.
+Human mobility is key to understanding the transmission pathways. Using a mobility dataset of over 500,000 flights and more than 100 million passengers, the authors of a holistic study of the coronavirus spread develop a dynamic network model using time-dependent border restrictions as exogenous variables. \trbcite{zhang2020pathways} This offers an insight into the correlation between the epidemics experienced by multiple countries and international travel restrictions.
+Drilling down to place-based activities, patterns begin to emerge in 6 activity responses across 108 countries. \trbcite{mckenzie2020country} As an exploratory effort in comparison with government policies, however, their work includes no modeling attempt to explain COVID-19 outcomes. 
 
 Beyond these global studies, several city and country-specific simulations and models have been estimated to explain how activities, mobility (particularly transit) impact COVID-19 outcomes.
 \trbcite{kumar2020activitybased} used an activity-based epidemiological framework to study how COVID-19 is propagated across various daily activities in car-dependent cities typically found in the US and Canada.
@@ -283,7 +278,7 @@ Given China's and then  Italy's prominence in the earlier stages of the pandemic
   kraemer2020effect,bonaccorsi2020economic,pepe2020covid19,carteni2020how}.
 While these have been important for country-wide epidemiological studies, they have not provided knowledge on activity-based impacts.
 
-A study on human mobility across countries aggregates data on a daily basis and uses a dynamic spatial network model to estimate the confirmed infections in each country from a global sample. \trbcite{zhang2020covid19} Passenger flight capacity is used as opposed to the actual number of passengers who flew in the studied time frame (January to April, 2020). According to the results, there is an association between the number of daily new cases in the US and the epidemics in Europe, South America and Africa. Furthermore, there is a mutual correlation among European countries. Aggregated location data is also used in the mobility networks models explaining inequities but focusing solely on the US. 
+A study on human mobility across countries aggregates data on a daily basis and uses a dynamic spatial network model to estimate the confirmed infections in each country from a global sample \trbcite{zhang2020covid19}. Passenger flight capacity is used as opposed to the actual number of passengers who flew in the studied time frame (January to April, 2020). According to the results, there is an association between the number of daily new cases in the US and the epidemics in Europe, South America and Africa. Furthermore, there is a mutual correlation among European countries. Aggregated location data is also used in the mobility networks models explaining inequities but focusing solely on the US. 
 
 Therefore, there remains an urgent need to understand the interdependencies between COVID-19 outcomes and human mobility and activity patterns.
 Statistically significant models can yield insights to enable policymakers contain and recover from the ongoing pandemic.
@@ -341,31 +336,110 @@ destination & Flight Destination. \\
 \end{table}
 
 
+\subsection{Exploratory data analysis}
+We employed unsupervised learning methods to visualize and explore the time series.
+First, we used the dynamic time warping (DTW) algorithm \trbcite{giorgino2009computing} to compute the dissimilarity matrix for the pairwise distances between the multivariate time series of each country. 
+We then applied the Ward criterion \trbcite{murtagh2014ward} for hierarchical clustering to group the countries across the prevailing patterns in the dataset. The dendogram of the four clusters extracted is shown in \autoref{fig:dend}.
+
+Our clustering procedure based on the activity and mobility trends of 63 countries optimally yields four clusters (\autoref{fig:dend}).
+Clusters 1 and 2 are much smaller than the other two, with 9 and 11 members, respectively.
+
+We perform a time series transformation of the community mobility data. Google clusters their baseline trends around zero which affects our log differencing.
+Therefore, we shift all of the movement indicators such as workplace, residential and transit by 100 which is also consistent with Apple's approach of keeping track of requests for directions.
+
+There is no strong continental dominance in any one of the clusters.
+This indicates at least there is geographic heterogeneity in the distribution of these trends as observed by Google location.
+We note that these variables are only a partial observation of the true activity/mobility trends across these dimensions, given that only a select proportion in each country uses Google devices with location data turned on, or Apple devices for navigation.
+Further, these samples may be more representative of urban or suburban populations in some countries than in others.
+Nevertheless, some useful insights may still be gained.
+
+\begin{figure}[h!]
+  %\centering
+  \includegraphics[width=\textwidth,trim={0cm 0 1.9cm 7cm},clip]{dendrogram}
+  \caption{Dendrogram indicating four clusters of countries based on nine mobility and activity indicators}
+  \label{fig:dend}
+\end{figure}
+
+We show the daily confirmed COVID-19 cases at the country level by cluster in \autoref{fig:cov} on a log-y scale.
+Most of the countries in Cluster 1 have experienced a decrease in COVID-19 cases.
+However, Serbia and Indonesia are outliers.
+Given that the countries in this cluster had the least disruption in activities compared to other clusters, other exogenous factors are probably responsible for the favorable COVID-19 outcomes.
+Clusters 2 and 3 were harder hit in the early weeks of the year, but indicate a downturn in COVID-19 infections from late March and early April.
+These clusters had the most severe decreases in work and transit activities (and highest increases in home activities) from the baseline.
+Clearly, there are few exceptions in each of these clusters, such as India in Cluster 2 and Colombia in Cluster 3.
+Finally, in Cluster 4, most of the countries have been on an upward trajectory in recent weeks (except for Denmark).
+In these countries, there is evidence of lockdowns being lifted too soon and perhaps less strict public health policies than elsewhere.
+In terms of activities, this is one cluster where home activities showed the least disruption, which is an indicator of the aforementioned trend.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=.45\textwidth]{c1-cov}
+  \includegraphics[width=.45\textwidth]{c2-cov}
+  
+  \includegraphics[width=.45\textwidth]{c3-cov}
+  \includegraphics[width=.45\textwidth]{c4-cov}
+  \caption{Daily confirmed COVID-19 cases for each of the clusters (log y-axis); Johns Hopkins dataset.}
+  \label{fig:cov}
+\end{figure}
 
 
- 
+We then plot the trends of activity changes as observed from Google location data, grouping these by cluster (\autoref{fig:act}).
+Trends are shown by means of a generalized linear model estimated for each country.
+Except in Cluster 1, which consists notably of South Korea, Hong Kong, Taiwan and Vietnam (countries with some of the best COVID-19 outcomes),
+there was a significant downturn in work activities from mid-February to early April.
+This decrease is as great as 75 percentage points in Clusters 2 and 3.
+However, in Cluster 4 (e.g.\ United States, Brazil, Japan), it only reaches 50 percentage points.
+The change in work activities can be seen as a partial indicator of lockdown policies or behavioral responses to the pandemic in each of the countries.
+Transit activities similarly reduced in Clusters 2 and 3, but not as severely in Cluster 4.
+Notably, in Cluster 1, transit stop activities dipped the lowest in South Korea compared to the other countries.
+This outcome can be readily understood given that South Korea focused heavily on contact tracing to mitigate the spread of COVID-19 \trbcite{aum2020covid19,parkearly}.
 
-%\href{https://github.com/narslab/live-dashboard}{Dashboard}
-%\url{https://github.com/narslab/live-dashboard}
+Grocery shopping experienced a downturn in most countries. However, Clusters 1 and 4 show the smallest disruptions (a decline of about 20 percentage points).
+The same trend is observed for retail activities.
+However, in Cluster 4, this category had a more severe downturn (as many as 60 percentage points from the baseline), compared to grocery shopping.
+This could be explained by policies keeping grocery stores open as essential services, while other retail outlets were shut.
+Also, home activities (people staying in their places of residence) increased across all countries, peaking in April and then declining thereafter.
+The change from baseline was greatest in Cluster 3 (generally over 50 percentage points), indicating that countries in this cluster stayed at home the most.
+Furthermore, the peak for home activities occurs the latest in Cluster 3.
 
-\section{Methods}
-First, we investigate patterns across the activity and mobility variables by clustering the countries across these nine dimensions.
-We use dynamic time warping and hierarchical agglomerative clustering to obtain the clusters.
-These yield preliminary insights into the trends at the country level.
-Finally, we intend to estimate vector autoregression models at the country and at the cluster level in order to quantify how changes in activity and mobility trends influence COVID-19 outcomes. 
-In particular, we expect results as well on interdependencies between the mobility and activity variables.
+There are no discernible cluster-specific patterns for park activities for Clusters 1, 2 and 4 (as trends vary by country).
+However, in Cluster 3, many countries observed a decline of up to 75 percentage points through April, followed by a large uptick.
 
-% \subsection{Dynamic time warping}
-% The dynamic time warping (DTW) algorithm \trbcite{giorgino2009computing} computes the optimal distance between pairwise time series.
-% Any hierarchical clustering procedure requires a dissimilarity matrix as an input, which DTW provides.
-% First, we compute the Euclidean distance matrix for each country across the dimensions of the endogenous variables.
-% Second, we apply DTW to find the optimal matching between the countries based on their pairwise distance matrices across the dimensions observed.
-% The symmetric dissimilarity matrix is then used an input to the clustering algorithm.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{c1-activity}
+  \includegraphics[width=\textwidth]{c2-activity}
+  \includegraphics[width=\textwidth]{c3-activity}
+  \includegraphics[width=\textwidth]{c4-activity}
+  \caption{Activity changes from baseline (100\%) by cluster (Google dataset).  Trends are indicated using a generalized linear (GLM) fit for each country.}
+  \label{fig:act}
+\end{figure}
 
 
-% \subsection{Clustering}
-% We use the Ward method \trbcite{murtagh2014ward}, which is a hierarchical agglomerative clustering (HAC) approach, to group the countries.
-% The dendogram is shown in \autoref{fig:dend}.
+% The driving, transit and walking activities observed from navigation via Apple devices do not distinctly vary among the clusters (\autoref{fig:mob}).
+% This could be explained by the fact that usual activities perhaps do not require navigation.
+% And also since Apple Maps users are not always representative of the population, it is less likely that changes in regular activities would be discernible from these data.
+
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=.9\textwidth]{c1-mobility}
+%   \includegraphics[width=.9\textwidth]{c2-mobility}
+%   \includegraphics[width=.9\textwidth]{c3-mobility}
+%   \includegraphics[width=.9\textwidth]{c4-mobility}
+%   \caption{Mobility changes from baseline (100\%) by cluster (Apple dataset). Trends are indicated using a generalized linear (GLM) fit for each country.}
+%   \label{fig:mob}
+% \end{figure}
+
+
+
+
+\section{Global Vector Autoregression model}
+% First, we investigate patterns across the activity and mobility variables by clustering the countries across these nine dimensions.
+% We use dynamic time warping and hierarchical agglomerative clustering to obtain the clusters.
+% These yield preliminary insights into the trends at the country level.
+% Finally, we intend to estimate vector autoregression models at the country and at the cluster level in order to quantify how changes in activity and mobility trends influence COVID-19 outcomes. 
+% In particular, we expect results as well on interdependencies between the mobility and activity variables.
+
 
 
 % We use a Global Vector AutoRegression (GVAR) modeling framework \cite{dees2007exploring} (Carteni et al
@@ -405,7 +479,7 @@ In particular, we expect results as well on interdependencies between the mobili
 
 
 
-\subsection{Global Vector Autoregression with dynamic weights}
+%\subsection{Global Vector Autoregression with dynamic weights}
 
 The basic vector autoregression (VAR) model is given by:
 \begin{equation}
@@ -484,98 +558,9 @@ where $x_{t}$ $x_{t-l}$ and $u_{t}$ are stacked vectors of length $kN$.
 % \end{itemize}
 
 
-\section{Current Results and Discussion}
-Our clustering procedure based on the activity and mobility trends of 63 countries optimally yields four clusters (\autoref{fig:dend}).
-Clusters 1 and 2 are much smaller than the other two, with 9 and 11 members, respectively.
-
-We perform a time series transformation of the community mobility data. Google clusters their baseline trends around zero which affects our log differencing.
-Therefore, we shift all of the movement indicators such as workplace, residential and transit by 100 which is also consistent with Apple's approach of keeping track of requests for directions.
-
-There is no strong continental dominance in any one of the clusters.
-This indicates at least there is geographic heterogeneity in the distribution of these trends as observed by Google location and Apple navigation-based data.
-We note that these variables are only a partial observation of the true activity/mobility trends across these dimensions, given that only a select proportion in each country uses Google devices with location data turned on, or Apple devices for navigation.
-Further, these samples may be more representative of urban or suburban populations in some countries than in others.
-Nevertheless, some useful insights may still be gained.
-
-\begin{figure}[h!]
-  %\centering
-  \includegraphics[width=\textwidth,trim={0cm 0 1.9cm 7cm},clip]{dendrogram}
-  \caption{Dendrogram indicating four clusters of countries based on nine mobility and activity indicators}
-  \label{fig:dend}
-\end{figure}
-
-We then plot the trends of activity changes as observed from Google location data, grouping these by cluster (\autoref{fig:act}).
-Trends are shown by means of a generalized linear model estimated for each country.
-Except in Cluster 1, which consists notably of South Korea, Hong Kong, Taiwan and Vietnam (countries with some of the best COVID-19 outcomes),
-there was a significant downturn in work activities from mid-February to early April.
-This decrease is as great as 75 percentage points in Clusters 2 and 3.
-However, in Cluster 4 (e.g.\ United States, Brazil, Japan), it only reaches 50 percentage points.
-The change in work activities can be seen as a partial indicator of lockdown policies or behavioral responses to the pandemic in each of the countries.
-Transit activities similarly reduced in Clusters 2 and 3, but not as severely in Cluster 4.
-Notably, in Cluster 1, transit stop activities dipped the lowest in South Korea compared to the other countries.
-This outcome can be readily understood given that South Korea focused heavily on contact tracing to mitigate the spread of COVID-19 \trbcite{aum2020covid19,parkearly}.
-
-Grocery shopping experienced a downturn in most countries. However, Clusters 1 and 4 show the smallest disruptions (a decline of about 20 percentage points).
-The same trend is observed for retail activities.
-However, in Cluster 4, this category had a more severe downturn (as many as 60 percentage points from the baseline), compared to grocery shopping.
-This could be explained by policies keeping grocery stores open as essential services, while other retail outlets were shut.
-Also, home activities (people staying in their places of residence) increased across all countries, peaking in April and then declining thereafter.
-The change from baseline was greatest in Cluster 3 (generally over 50 percentage points), indicating that countries in this cluster stayed at home the most.
-Furthermore, the peak for home activities occurs the latest in Cluster 3.
-
-There are no discernible cluster-specific patterns for park activities for Clusters 1, 2 and 4 (as trends vary by country).
-However, in Cluster 3, many countries observed a decline of up to 75 percentage points through April, followed by a large uptick.
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=\textwidth]{c1-activity}
-  \includegraphics[width=\textwidth]{c2-activity}
-  \includegraphics[width=\textwidth]{c3-activity}
-  \includegraphics[width=\textwidth]{c4-activity}
-  \caption{Activity changes from baseline (100\%) by cluster (Google dataset).  Trends are indicated using a generalized linear (GLM) fit for each country.}
-  \label{fig:act}
-\end{figure}
+\section{Results and Discussion}
 
 
-The driving, transit and walking activities observed from navigation via Apple devices do not distinctly vary among the clusters (\autoref{fig:mob}).
-This could be explained by the fact that usual activities perhaps do not require navigation.
-And also since Apple Maps users are not always representative of the population, it is less likely that changes in regular activities would be discernible from these data.
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=.9\textwidth]{c1-mobility}
-  \includegraphics[width=.9\textwidth]{c2-mobility}
-  \includegraphics[width=.9\textwidth]{c3-mobility}
-  \includegraphics[width=.9\textwidth]{c4-mobility}
-  \caption{Mobility changes from baseline (100\%) by cluster (Apple dataset). Trends are indicated using a generalized linear (GLM) fit for each country.}
-  \label{fig:mob}
-\end{figure}
-
-
-We show the daily confirmed COVID-19 cases at the country level by cluster in \autoref{fig:cov} on a log-y scale.
-Most of the countries in Cluster 1 have experienced a decrease in COVID-19 cases.
-However, Serbia and Indonesia are outliers.
-Given that the countries in this cluster had the least disruption in activities compared to other clusters, other exogenous factors are probably responsible for the favorable COVID-19 outcomes.
-Clusters 2 and 3 were harder hit in the early weeks of the year, but indicate a downturn in COVID-19 infections from late March and early April.
-These clusters had the most severe decreases in work and transit activities (and highest increases in home activities) from the baseline.
-Clearly, there are few exceptions in each of these clusters, such as India in Cluster 2 and Colombia in Cluster 3.
-Finally, in Cluster 4, most of the countries have been on an upward trajectory in recent weeks (except for Denmark).
-In these countries, there is evidence of lockdowns being lifted too soon and perhaps less strict public health policies than elsewhere.
-In terms of activities, this is one cluster where home activities showed the least disruption, which is an indicator of the aforementioned trend.
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=.45\textwidth]{c1-cov}
-  \includegraphics[width=.45\textwidth]{c2-cov}
-  
-  \includegraphics[width=.45\textwidth]{c3-cov}
-  \includegraphics[width=.45\textwidth]{c4-cov}
-  \caption{Daily confirmed COVID-19 cases for each of the clusters (log y-axis); Johns Hopkins dataset.}
-  \label{fig:cov}
-\end{figure}
-
-
-\subsection{Expected results}
 We plan to estimate country-level vector autoregression models (VARs), cluster-level panel VARs and a global VAR.
 These models will enable us to explain how COVID-19 outcomes were impacted by changes across these activities.
 They would also allow us to analyze how changes in one dimension would affect the other (using impulse response functions).
@@ -584,7 +569,7 @@ Air passenger travel flows will also be incorporated as weights on weakly exogen
 These would allow the inclusion of the effects of observations in other countries across these dimensions.
 
 
-\section{Conclusion and future work}
+\section{Conclusion}
 We cluster the countries in our sample into four categories based on similar activity and mobility trends.
 % By running the model with a different lag parameter for each country we attempted to estimate the optimal lag for each country.
 % However, our VAR implementation fell short of producing statistically significant results.
